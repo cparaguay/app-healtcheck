@@ -1,0 +1,15 @@
+# propiedades para entorno desarrollo
+# spring.profiles.active=dev
+server:
+  port: 8080
+  servlet:
+    context-path: /app  
+
+#Configurando el dataSource
+spring:
+  datasource:
+    name: db
+    username: ${username}
+    password: ${password}
+    url: ${url}
+    driver-class-name: ${driver}
