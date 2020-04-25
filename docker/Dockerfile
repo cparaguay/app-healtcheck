@@ -9,6 +9,6 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
     && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
-COPY target/app.jar /workspace/app.jar
+COPY ./target/app.jar /workspace/app.jar
 CMD java -jar app.jar
 
