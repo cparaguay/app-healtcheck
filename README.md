@@ -36,4 +36,4 @@ El acceso para la documentación de los servicios web es:
 - [/app/swagger-ui.html](/app/swagger-ui.html)
 
 Ejemplo:
-- [http://localhost:8080/app/swagger-ui.html](http://localhost:8080/app/swagger-ui.html)
+- [http://localhost:8080/app/](http://localhost:8080/app/)

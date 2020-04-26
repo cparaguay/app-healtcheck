@@ -1,7 +1,7 @@
 # propiedades para entorno desarrollo
 # spring.profiles.active=dev
 server:
-  port: 8081
+  port: ${PORT_APP}
   servlet:
     context-path: /app  
 
@@ -13,3 +13,9 @@ spring:
     password: ${password}
     url: ${url}
     driver-class-name: ${driver}
+    
+    
+
+springdoc:
+  swagger-ui:
+    path: /

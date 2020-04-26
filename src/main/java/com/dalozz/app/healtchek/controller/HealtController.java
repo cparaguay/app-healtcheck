@@ -2,6 +2,8 @@ package com.dalozz.app.healtchek.controller;
 
 import java.text.MessageFormat;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,7 +45,7 @@ public class HealtController {
 	private String url;
 	
 	@ApiResponse(description = "Obtener las variables asignadas")
-	@GetMapping(value = HealtControllerPath.HOME, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = HealtControllerPath.HOME, produces = MediaType.TEXT_PLAIN_VALUE)
 	@ResponseStatus(code = HttpStatus.OK)
 	public String home() {
 		
@@ -52,7 +54,8 @@ public class HealtController {
 		String message = StringUtils.EMPTY;
 		
 		try {
-			message = MessageFormat.format("driver: [{0}] | url: [{1}] | username: [{2}] | password: [{3}]", driver, url, username, password);
+			message = MessageFormat.format("home() | id: {0} - driver: [{1}] | url: [{2}] | username: [{3}] | password: [{4}]", id, driver, url, username, password);
+			log.info(message);
 		} catch (Exception e) {
 			message = e.getMessage();
 			log.error(e.getMessage(), e);
@@ -63,9 +66,8 @@ public class HealtController {
 	}
 	
 	@ApiResponse(description = "Consulta a una tabla mediante su esquema, hace un select count.")
-	@GetMapping(value = HealtControllerPath.CHECK, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseStatus(code = HttpStatus.OK)
-	public String check(@PathVariable("schema")String schema, @PathVariable("table")String table) {
+	@GetMapping(value = HealtControllerPath.CHECK, produces = MediaType.TEXT_PLAIN_VALUE)
+	public String check(@PathVariable("schema")String schema, @PathVariable("table")String table, HttpServletResponse response) {
 		
 		String id = String.valueOf(System.nanoTime());
 		log.info(Log4jUtil.inicioLog("check() | id: {0}", id));
@@ -74,9 +76,11 @@ public class HealtController {
 		try {
 			log.info("check() | id: {} Schema: {}, Table: {}", id, schema, table);
 			healtService.check(schema, table);
+			log.info("check() | id: {} - Query Ok", id);
 		} catch (Exception e) {
 			message = e.getMessage();
 			log.error(e.getMessage(), e);
+			response.setStatus(HttpStatus.BAD_REQUEST.value());
 		}
 		
 		log.info(Log4jUtil.finLog("check() | id: {0}", id));
