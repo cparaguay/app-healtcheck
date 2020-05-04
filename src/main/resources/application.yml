@@ -3,7 +3,7 @@
 server:
   port: ${PORT_APP}
   servlet:
-    context-path: /app  
+    context-path: /  
 
 #Configurando el dataSource
 spring:
