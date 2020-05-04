@@ -13,5 +13,6 @@ public class ResourcesControllerPath {
 		public static final String RESOURCE = "/healt";
 		public static final String CHECK = "/check/{schema}/{table}";
 		public static final String HOME = "/home";
+		public static final String CONDITION_SIMPLE = "/checkcondition/{schema}/{table}/{column}/{value}";
 	}
 }

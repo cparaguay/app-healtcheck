@@ -2,7 +2,7 @@ version: '3'
 
 services:
     app_healtcheck:
-        image: dalozz/app_healtcheck:1.0
+        image: dalozz/app_healtcheck:2.0
         build:
             context: .
 

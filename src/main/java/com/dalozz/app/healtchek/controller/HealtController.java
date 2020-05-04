@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -58,7 +59,6 @@ public class HealtController {
 			log.info(message);
 		} catch (Exception e) {
 			message = e.getMessage();
-			log.error(e.getMessage(), e);
 		}
 		log.info(Log4jUtil.finLog("home() | id: {0}", id));
 		
@@ -76,14 +76,37 @@ public class HealtController {
 		try {
 			log.info("check() | id: {} Schema: {}, Table: {}", id, schema, table);
 			healtService.check(schema, table);
-			log.info("check() | id: {} - Query Ok", id);
+			log.info("check() | id: {} - Query Status OK", id);
 		} catch (Exception e) {
 			message = e.getMessage();
-			log.error(e.getMessage(), e);
 			response.setStatus(HttpStatus.BAD_REQUEST.value());
 		}
-		
 		log.info(Log4jUtil.finLog("check() | id: {0}", id));
+		
+	    return message;
+	}
+	
+	@ApiResponse(description = "Consulta a una tabla mediante un where simple")
+	@GetMapping(value = HealtControllerPath.CONDITION_SIMPLE, produces = MediaType.TEXT_PLAIN_VALUE)
+	public String checkConditionSimple(@PathVariable("schema")String schema, @PathVariable("table")String table, @PathVariable("column")String column, @PathVariable("value")String value, HttpServletResponse response) {
+		
+		String id = String.valueOf(System.nanoTime());
+		log.info(Log4jUtil.inicioLog("checkConditionSimple() | id: {0}", id));
+		String message = StringUtils.EMPTY;
+		
+		try {
+			log.info("checkConditionSimple() | id: {} Schema: {}, Table: {}", id, schema, table);
+			Boolean result = healtService.conditionSimple(schema, table, column, value, id);
+			if(BooleanUtils.isFalse(result)) {
+				response.setStatus(HttpStatus.BAD_REQUEST.value());
+			}else {
+				log.info("checkConditionSimple() | id: {} - Query Status OK", id);
+			}
+		} catch (Exception e) {
+			message = e.getMessage();
+			response.setStatus(HttpStatus.BAD_REQUEST.value());
+		}
+		log.info(Log4jUtil.finLog("checkConditionSimple() | id: {0}", id));
 		
 	    return message;
 	}
